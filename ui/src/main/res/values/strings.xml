@@ -260,4 +260,19 @@
     <string name="biometric_prompt_private_key_title">Authenticate to view private key</string>
     <string name="biometric_auth_error">Authentication failure</string>
     <string name="biometric_auth_error_reason">Authentication failure: %s</string>
+    <!-- DoH (DNS over HTTPS) settings -->
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Configure encrypted DNS resolution</string>
+    <string name="doh_settings_summary_disabled">Disabled</string>
+    <string name="doh_enabled">Enabled</string>
+    <string name="doh_provider">DoH Provider</string>
+    <string name="doh_custom_url">Custom DoH URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Please enter a custom DoH URL</string>
+    <string name="doh_custom_provider">Custom</string>
+    <string name="doh_priority_mode">Resolution Priority</string>
+    <string name="doh_mode_doh_first">DoH first, fallback to system DNS</string>
+    <string name="doh_mode_system_first">System DNS first, fallback to DoH</string>
+    <string name="doh_mode_doh_only">DoH only (no fallback)</string>
+    <string name="doh_mode_system_only">System DNS only (disable DoH)</string>
 </resources>

@@ -21,6 +21,10 @@
         android:singleLineTitle="false"
         android:summary="@string/log_viewer_pref_summary"
         android:title="@string/log_viewer_pref_title" />
+    <com.wireguard.android.preference.DohPreference
+        android:key="doh_settings"
+        android:singleLineTitle="false"
+        android:title="@string/doh_settings_title" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="dark_theme"

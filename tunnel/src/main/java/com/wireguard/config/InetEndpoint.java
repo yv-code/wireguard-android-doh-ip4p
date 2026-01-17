@@ -16,6 +16,8 @@ import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -96,32 +98,89 @@ public final class InetEndpoint {
             //TODO(zx2c4): Implement a real timeout mechanism using DNS TTL
             if (Duration.between(lastResolution, Instant.now()).toMinutes() > 1) {
                 try {
-                    // Prefer v4 endpoints over v6 to work around DNS64 and IPv6 NAT issues.
-                    final InetAddress[] candidates = InetAddress.getAllByName(host);
-                    InetAddress address = candidates[0];
-                    for (final InetAddress candidate : candidates) {
-                        if (candidate instanceof Inet4Address) {
-                            address = candidate;
-                            break;
+                    // Resolve using DoH or system DNS based on configuration
+                    final List<InetAddress> candidates = resolveHost(host);
+
+                    if (candidates.isEmpty()) {
+                        resolved = null;
+                    } else {
+                        // Prefer v4 endpoints over v6 to work around DNS64 and IPv6 NAT issues.
+                        InetAddress address = candidates.get(0);
+                        for (final InetAddress candidate : candidates) {
+                            if (candidate instanceof Inet4Address) {
+                                address = candidate;
+                                break;
+                            }
                         }
-                    }
-                    if (address instanceof Inet6Address) {
-                        byte[] v6 = address.getAddress();
-                        if ((v6[0] == 0x20) && (v6[1] == 0x01) && (v6[2] == 0x00) && (v6[3] == 0x00)) {
-                            InetAddress v4 = InetAddress.getByAddress(Arrays.copyOfRange(v6, 12, 16));
-                            int p = ((v6[10] & 0xFF) << 8) | (v6[11] & 0xFF);
-                            resolved = new InetEndpoint(v4.getHostAddress(), true, p);
+                        // Handle IP4P (IPv4 over IPv6 Port) encoding
+                        if (address instanceof Inet6Address) {
+                            byte[] v6 = address.getAddress();
+                            if ((v6[0] == 0x20) && (v6[1] == 0x01) && (v6[2] == 0x00) && (v6[3] == 0x00)) {
+                                InetAddress v4 = InetAddress.getByAddress(Arrays.copyOfRange(v6, 12, 16));
+                                int p = ((v6[10] & 0xFF) << 8) | (v6[11] & 0xFF);
+                                resolved = new InetEndpoint(v4.getHostAddress(), true, p);
+                            }
                         }
+                        if (resolved == null)
+                            resolved = new InetEndpoint(address.getHostAddress(), true, port);
                     }
-                    if (resolved == null)
-                        resolved = new InetEndpoint(address.getHostAddress(), true, port);
                     lastResolution = Instant.now();
-                } catch (final UnknownHostException e) {
+                } catch (final Exception e) {
                     resolved = null;
                 }
             }
             return Optional.ofNullable(resolved);
         }
+    }
+
+    /**
+     * Resolve the host using DoH or system DNS based on the configured priority mode.
+     */
+    private List<InetAddress> resolveHost(final String host) throws Exception {
+        final String mode = DohConfig.getPriorityMode();
+        final DohResolver dohResolver = DohConfig.getResolver();
+        final SystemDnsResolver systemResolver = SystemDnsResolver.getInstance();
+
+        switch (mode) {
+            case DohConfig.MODE_DOH_FIRST:
+                if (dohResolver != null) {
+                    return resolveWithFallback(dohResolver, systemResolver, host);
+                }
+                return systemResolver.resolve(host);
+
+            case DohConfig.MODE_SYSTEM_FIRST:
+                if (dohResolver != null) {
+                    return resolveWithFallback(systemResolver, dohResolver, host);
+                }
+                return systemResolver.resolve(host);
+
+            case DohConfig.MODE_DOH_ONLY:
+                if (dohResolver != null) {
+                    return dohResolver.resolve(host);
+                }
+                throw new Exception("DoH is not configured");
+
+            case DohConfig.MODE_SYSTEM_ONLY:
+            default:
+                return systemResolver.resolve(host);
+        }
+    }
+
+    /**
+     * Try to resolve using the primary resolver, fall back to secondary on failure.
+     */
+    private List<InetAddress> resolveWithFallback(final DnsResolver primary,
+                                                   final DnsResolver secondary,
+                                                   final String host) throws Exception {
+        try {
+            final List<InetAddress> result = primary.resolve(host);
+            if (!result.isEmpty()) {
+                return result;
+            }
+        } catch (final Exception ignored) {
+            // Primary failed, try secondary
+        }
+        return secondary.resolve(host);
     }
 
     @Override

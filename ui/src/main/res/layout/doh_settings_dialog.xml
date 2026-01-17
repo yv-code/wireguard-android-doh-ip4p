@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2017-2025 WireGuard LLC. All Rights Reserved.
+  ~ SPDX-License-Identifier: Apache-2.0
+  -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/doh_provider_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/doh_provider">
+
+            <AutoCompleteTextView
+                android:id="@+id/doh_provider_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/doh_custom_url_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/doh_custom_url"
+            app:placeholderText="@string/doh_custom_url_hint"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/doh_custom_url_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/doh_priority_mode_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/doh_priority_mode"
+            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+        <RadioGroup
+            android:id="@+id/doh_priority_mode_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/mode_doh_first"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doh_mode_doh_first" />
+
+            <RadioButton
+                android:id="@+id/mode_system_first"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doh_mode_system_first" />
+
+            <RadioButton
+                android:id="@+id/mode_doh_only"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doh_mode_doh_only" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</ScrollView>

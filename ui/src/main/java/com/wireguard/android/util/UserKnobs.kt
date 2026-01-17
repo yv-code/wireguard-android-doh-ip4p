@@ -118,4 +118,75 @@ object UserKnobs {
                 it[UPDATER_NEWER_VERSION_CONSENTED] = newerVersionConsented
         }
     }
+
+    // DoH (DNS over HTTPS) settings
+    private val DOH_ENABLED = booleanPreferencesKey("doh_enabled")
+    val dohEnabled: Flow<Boolean>
+        get() = Application.getPreferencesDataStore().data.map {
+            it[DOH_ENABLED] ?: false
+        }
+
+    suspend fun setDohEnabled(enabled: Boolean) {
+        Application.getPreferencesDataStore().edit {
+            it[DOH_ENABLED] = enabled
+        }
+    }
+
+    private val DOH_SERVER_URL = stringPreferencesKey("doh_server_url")
+    val dohServerUrl: Flow<String?>
+        get() = Application.getPreferencesDataStore().data.map {
+            it[DOH_SERVER_URL]
+        }
+
+    suspend fun setDohServerUrl(url: String?) {
+        Application.getPreferencesDataStore().edit {
+            if (url == null)
+                it.remove(DOH_SERVER_URL)
+            else
+                it[DOH_SERVER_URL] = url
+        }
+    }
+
+    // Separate storage for custom URL to preserve it when switching providers
+    private val DOH_CUSTOM_URL = stringPreferencesKey("doh_custom_url")
+    val dohCustomUrl: Flow<String?>
+        get() = Application.getPreferencesDataStore().data.map {
+            it[DOH_CUSTOM_URL]
+        }
+
+    suspend fun setDohCustomUrl(url: String?) {
+        Application.getPreferencesDataStore().edit {
+            if (url == null)
+                it.remove(DOH_CUSTOM_URL)
+            else
+                it[DOH_CUSTOM_URL] = url
+        }
+    }
+
+    private val DOH_PROVIDER_NAME = stringPreferencesKey("doh_provider_name")
+    val dohProviderName: Flow<String?>
+        get() = Application.getPreferencesDataStore().data.map {
+            it[DOH_PROVIDER_NAME]
+        }
+
+    suspend fun setDohProviderName(name: String?) {
+        Application.getPreferencesDataStore().edit {
+            if (name == null)
+                it.remove(DOH_PROVIDER_NAME)
+            else
+                it[DOH_PROVIDER_NAME] = name
+        }
+    }
+
+    private val DOH_PRIORITY_MODE = stringPreferencesKey("doh_priority_mode")
+    val dohPriorityMode: Flow<String>
+        get() = Application.getPreferencesDataStore().data.map {
+            it[DOH_PRIORITY_MODE] ?: "system_only"
+        }
+
+    suspend fun setDohPriorityMode(mode: String) {
+        Application.getPreferencesDataStore().edit {
+            it[DOH_PRIORITY_MODE] = mode
+        }
+    }
 }

@@ -27,6 +27,7 @@ import com.wireguard.android.util.RootShell
 import com.wireguard.android.util.ToolsInstaller
 import com.wireguard.android.util.UserKnobs
 import com.wireguard.android.util.applicationScope
+import com.wireguard.config.DohConfig
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -82,6 +83,14 @@ class Application : android.app.Application() {
         return backend
     }
 
+    private suspend fun initializeDohConfig() {
+        val enabled = UserKnobs.dohEnabled.first()
+        val serverUrl = UserKnobs.dohServerUrl.first()
+        val providerName = UserKnobs.dohProviderName.first()
+        val priorityMode = UserKnobs.dohPriorityMode.first()
+        DohConfig.configure(enabled, serverUrl, providerName, priorityMode)
+    }
+
     override fun onCreate() {
         Log.i(TAG, USER_AGENT)
         super.onCreate()
@@ -115,6 +124,10 @@ class Application : android.app.Application() {
             } catch (e: Throwable) {
                 Log.e(TAG, Log.getStackTraceString(e))
             }
+        }
+        // Initialize DoH configuration from stored settings
+        coroutineScope.launch {
+            initializeDohConfig()
         }
         Updater.monitorForUpdates()
 
