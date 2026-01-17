@@ -87,4 +87,18 @@
     <string name="version_summary_unknown">Tuntematon %s versio</string>
     <string name="biometric_auth_error">Varmennusvirhe</string>
     <string name="biometric_auth_error_reason">Varmennusvirhe: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Määritä salattu DNS-resoluutio</string>
+    <string name="doh_settings_summary_disabled">Pois käytöstä</string>
+    <string name="doh_enabled">Käytössä</string>
+    <string name="doh_provider">DoH-palveluntarjoaja</string>
+    <string name="doh_custom_url">Mukautettu DoH-URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Anna mukautettu DoH-URL</string>
+    <string name="doh_custom_provider">Mukautettu</string>
+    <string name="doh_priority_mode">Resoluutioprioriteetti</string>
+    <string name="doh_mode_doh_first">DoH ensin, järjestelmä-DNS varalle</string>
+    <string name="doh_mode_system_first">Järjestelmä-DNS ensin, DoH varalle</string>
+    <string name="doh_mode_doh_only">Vain DoH (ei varaa)</string>
+    <string name="doh_mode_system_only">Vain järjestelmä-DNS (DoH pois käytöstä)</string>
 </resources>

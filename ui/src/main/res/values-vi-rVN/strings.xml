@@ -136,4 +136,18 @@
     <string name="log_saver_activity_label">Lưu nhật ký</string>
     <string name="parse_error_inet_address">Địa chỉ IP</string>
     <string name="peer">Đồng trang lứa</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Cấu hình phân giải DNS được mã hóa</string>
+    <string name="doh_settings_summary_disabled">Đã tắt</string>
+    <string name="doh_enabled">Đã bật</string>
+    <string name="doh_provider">Nhà cung cấp DoH</string>
+    <string name="doh_custom_url">URL DoH tùy chỉnh</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Vui lòng nhập URL DoH tùy chỉnh</string>
+    <string name="doh_custom_provider">Tùy chỉnh</string>
+    <string name="doh_priority_mode">Ưu tiên phân giải</string>
+    <string name="doh_mode_doh_first">DoH trước, DNS hệ thống dự phòng</string>
+    <string name="doh_mode_system_first">DNS hệ thống trước, DoH dự phòng</string>
+    <string name="doh_mode_doh_only">Chỉ DoH (không dự phòng)</string>
+    <string name="doh_mode_system_only">Chỉ DNS hệ thống (tắt DoH)</string>
 </resources>

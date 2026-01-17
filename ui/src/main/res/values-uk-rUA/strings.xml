@@ -282,4 +282,18 @@
     <string name="biometric_prompt_private_key_title">Авторизуйтеся для перегляду закритого ключа</string>
     <string name="biometric_auth_error">Помилка автентифікації</string>
     <string name="biometric_auth_error_reason">Помилка автентифікації: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Налаштувати зашифрований DNS</string>
+    <string name="doh_settings_summary_disabled">Вимкнено</string>
+    <string name="doh_enabled">Увімкнено</string>
+    <string name="doh_provider">Провайдер DoH</string>
+    <string name="doh_custom_url">Власний URL DoH</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Будь ласка, введіть власний URL DoH</string>
+    <string name="doh_custom_provider">Власний</string>
+    <string name="doh_priority_mode">Пріоритет розв\'язання</string>
+    <string name="doh_mode_doh_first">Спочатку DoH, потім системний DNS</string>
+    <string name="doh_mode_system_first">Спочатку системний DNS, потім DoH</string>
+    <string name="doh_mode_doh_only">Тільки DoH (без резерву)</string>
+    <string name="doh_mode_system_only">Тільки системний DNS (DoH вимкнено)</string>
 </resources>

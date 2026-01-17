@@ -243,4 +243,18 @@
     <string name="biometric_prompt_private_key_title">查看私钥前需要通过认证</string>
     <string name="biometric_auth_error">认证失败</string>
     <string name="biometric_auth_error_reason">认证失败：%s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">配置加密 DNS 解析</string>
+    <string name="doh_settings_summary_disabled">已禁用</string>
+    <string name="doh_enabled">已启用</string>
+    <string name="doh_provider">DoH 提供商</string>
+    <string name="doh_custom_url">自定义 DoH URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">请输入自定义 DoH URL</string>
+    <string name="doh_custom_provider">自定义</string>
+    <string name="doh_priority_mode">解析优先级</string>
+    <string name="doh_mode_doh_first">DoH 优先，失败回退系统 DNS</string>
+    <string name="doh_mode_system_first">系统 DNS 优先，失败回退 DoH</string>
+    <string name="doh_mode_doh_only">仅使用 DoH（不回退）</string>
+    <string name="doh_mode_system_only">仅使用系统 DNS（禁用 DoH）</string>
 </resources>

@@ -243,4 +243,18 @@
     <string name="biometric_prompt_private_key_title">Otentikasi untuk melihat kunci privat</string>
     <string name="biometric_auth_error">Otentikasi gagal</string>
     <string name="biometric_auth_error_reason">Otentikasi gagal: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Konfigurasi resolusi DNS terenkripsi</string>
+    <string name="doh_settings_summary_disabled">Dinonaktifkan</string>
+    <string name="doh_enabled">Diaktifkan</string>
+    <string name="doh_provider">Penyedia DoH</string>
+    <string name="doh_custom_url">URL DoH kustom</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Silakan masukkan URL DoH kustom</string>
+    <string name="doh_custom_provider">Kustom</string>
+    <string name="doh_priority_mode">Prioritas resolusi</string>
+    <string name="doh_mode_doh_first">DoH dulu, DNS sistem sebagai cadangan</string>
+    <string name="doh_mode_system_first">DNS sistem dulu, DoH sebagai cadangan</string>
+    <string name="doh_mode_doh_only">Hanya DoH (tanpa cadangan)</string>
+    <string name="doh_mode_system_only">Hanya DNS sistem (DoH dinonaktifkan)</string>
 </resources>

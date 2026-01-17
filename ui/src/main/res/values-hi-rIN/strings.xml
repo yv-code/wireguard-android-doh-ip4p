@@ -216,4 +216,18 @@
     <string name="biometric_prompt_private_key_title">प्राइवेट की देखने के लिए प्रमाणित करें</string>
     <string name="biometric_auth_error">प्रमाणीकरण विफलता</string>
     <string name="biometric_auth_error_reason">प्रमाणीकरण विफल: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">एन्क्रिप्टेड DNS कॉन्फ़िगर करें</string>
+    <string name="doh_settings_summary_disabled">अक्षम</string>
+    <string name="doh_enabled">सक्षम</string>
+    <string name="doh_provider">DoH प्रदाता</string>
+    <string name="doh_custom_url">कस्टम DoH URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">कृपया कस्टम DoH URL दर्ज करें</string>
+    <string name="doh_custom_provider">कस्टम</string>
+    <string name="doh_priority_mode">समाधान प्राथमिकता</string>
+    <string name="doh_mode_doh_first">पहले DoH, फिर सिस्टम DNS</string>
+    <string name="doh_mode_system_first">पहले सिस्टम DNS, फिर DoH</string>
+    <string name="doh_mode_doh_only">केवल DoH (कोई बैकअप नहीं)</string>
+    <string name="doh_mode_system_only">केवल सिस्टम DNS (DoH अक्षम)</string>
 </resources>

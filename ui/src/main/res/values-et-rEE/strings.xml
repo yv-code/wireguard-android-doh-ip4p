@@ -254,4 +254,18 @@ Aitäh veelkord sinu panuse eest.</string>
     <string name="biometric_prompt_private_key_title">Autendi privaatvõtme vaatamiseks</string>
     <string name="biometric_auth_error">Autentimine ebaõnnestus</string>
     <string name="biometric_auth_error_reason">Autentimine ebaõnnestus: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Seadista krüpteeritud DNS</string>
+    <string name="doh_settings_summary_disabled">Keelatud</string>
+    <string name="doh_enabled">Lubatud</string>
+    <string name="doh_provider">DoH pakkuja</string>
+    <string name="doh_custom_url">Kohandatud DoH URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Palun sisesta kohandatud DoH URL</string>
+    <string name="doh_custom_provider">Kohandatud</string>
+    <string name="doh_priority_mode">Lahendamise prioriteet</string>
+    <string name="doh_mode_doh_first">Esmalt DoH, seejärel süsteemi DNS</string>
+    <string name="doh_mode_system_first">Esmalt süsteemi DNS, seejärel DoH</string>
+    <string name="doh_mode_doh_only">Ainult DoH (varuvariandita)</string>
+    <string name="doh_mode_system_only">Ainult süsteemi DNS (DoH keelatud)</string>
 </resources>

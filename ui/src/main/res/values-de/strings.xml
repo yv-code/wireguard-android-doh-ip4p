@@ -256,4 +256,18 @@
     <string name="biometric_prompt_private_key_title">Authentifizieren, um privaten Schlüssel anzuzeigen</string>
     <string name="biometric_auth_error">Authentifizierungsfehler</string>
     <string name="biometric_auth_error_reason">Authentifizierungsfehler: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Verschlüsselte DNS-Auflösung konfigurieren</string>
+    <string name="doh_settings_summary_disabled">Deaktiviert</string>
+    <string name="doh_enabled">Aktiviert</string>
+    <string name="doh_provider">DoH-Anbieter</string>
+    <string name="doh_custom_url">Benutzerdefinierte DoH-URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Bitte geben Sie eine benutzerdefinierte DoH-URL ein</string>
+    <string name="doh_custom_provider">Benutzerdefiniert</string>
+    <string name="doh_priority_mode">Auflösungspriorität</string>
+    <string name="doh_mode_doh_first">DoH bevorzugt, bei Fehler System-DNS</string>
+    <string name="doh_mode_system_first">System-DNS bevorzugt, bei Fehler DoH</string>
+    <string name="doh_mode_doh_only">Nur DoH (kein Fallback)</string>
+    <string name="doh_mode_system_only">Nur System-DNS (DoH deaktiviert)</string>
 </resources>

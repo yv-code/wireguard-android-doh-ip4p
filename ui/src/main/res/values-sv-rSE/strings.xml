@@ -256,4 +256,18 @@
     <string name="biometric_prompt_private_key_title">Godkänn för att visa tunnelns privata nycklar</string>
     <string name="biometric_auth_error">Fel vid godkännande</string>
     <string name="biometric_auth_error_reason">Fel vid godkännande: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Konfigurera krypterad DNS-upplösning</string>
+    <string name="doh_settings_summary_disabled">Inaktiverad</string>
+    <string name="doh_enabled">Aktiverad</string>
+    <string name="doh_provider">DoH-leverantör</string>
+    <string name="doh_custom_url">Anpassad DoH-URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Ange en anpassad DoH-URL</string>
+    <string name="doh_custom_provider">Anpassad</string>
+    <string name="doh_priority_mode">Upplösningsprioritet</string>
+    <string name="doh_mode_doh_first">DoH först, system-DNS som reserv</string>
+    <string name="doh_mode_system_first">System-DNS först, DoH som reserv</string>
+    <string name="doh_mode_doh_only">Endast DoH (ingen reserv)</string>
+    <string name="doh_mode_system_only">Endast system-DNS (DoH inaktiverad)</string>
 </resources>

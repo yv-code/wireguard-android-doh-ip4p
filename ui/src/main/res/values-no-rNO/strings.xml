@@ -256,4 +256,18 @@
     <string name="biometric_prompt_private_key_title">Autentiser for å vise privatnøkkel</string>
     <string name="biometric_auth_error">Autentiseringsfeil</string>
     <string name="biometric_auth_error_reason">Autentiseringsfeil: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Konfigurer kryptert DNS-oppløsning</string>
+    <string name="doh_settings_summary_disabled">Deaktivert</string>
+    <string name="doh_enabled">Aktivert</string>
+    <string name="doh_provider">DoH-leverandør</string>
+    <string name="doh_custom_url">Egendefinert DoH-URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Vennligst skriv inn en egendefinert DoH-URL</string>
+    <string name="doh_custom_provider">Egendefinert</string>
+    <string name="doh_priority_mode">Oppløsningsprioritet</string>
+    <string name="doh_mode_doh_first">DoH først, system-DNS som reserve</string>
+    <string name="doh_mode_system_first">System-DNS først, DoH som reserve</string>
+    <string name="doh_mode_doh_only">Kun DoH (ingen reserve)</string>
+    <string name="doh_mode_system_only">Kun system-DNS (DoH deaktivert)</string>
 </resources>

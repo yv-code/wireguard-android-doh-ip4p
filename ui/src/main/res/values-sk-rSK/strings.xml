@@ -155,4 +155,18 @@
     <string name="biometric_prompt_private_key_title">Authenticate to view private key</string>
     <string name="biometric_auth_error">Overovanie zlyhalo</string>
     <string name="biometric_auth_error_reason">Overovanie zlyhalo: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Nastaviť šifrované DNS</string>
+    <string name="doh_settings_summary_disabled">Zakázané</string>
+    <string name="doh_enabled">Povolené</string>
+    <string name="doh_provider">Poskytovateľ DoH</string>
+    <string name="doh_custom_url">Vlastná URL DoH</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Zadajte prosím vlastnú URL DoH</string>
+    <string name="doh_custom_provider">Vlastné</string>
+    <string name="doh_priority_mode">Priorita rozlíšenia</string>
+    <string name="doh_mode_doh_first">Najprv DoH, potom systémové DNS</string>
+    <string name="doh_mode_system_first">Najprv systémové DNS, potom DoH</string>
+    <string name="doh_mode_doh_only">Iba DoH (bez zálohy)</string>
+    <string name="doh_mode_system_only">Iba systémové DNS (DoH zakázané)</string>
 </resources>

@@ -282,4 +282,18 @@
     <string name="biometric_prompt_private_key_title">Ověřte se pro zobrazení privátního klíče</string>
     <string name="biometric_auth_error">Ověření selhalo</string>
     <string name="biometric_auth_error_reason">Chyba ověřování: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Konfigurovat šifrované DNS</string>
+    <string name="doh_settings_summary_disabled">Zakázáno</string>
+    <string name="doh_enabled">Povoleno</string>
+    <string name="doh_provider">Poskytovatel DoH</string>
+    <string name="doh_custom_url">Vlastní URL DoH</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Zadejte prosím vlastní URL DoH</string>
+    <string name="doh_custom_provider">Vlastní</string>
+    <string name="doh_priority_mode">Priorita rozlišení</string>
+    <string name="doh_mode_doh_first">Nejprve DoH, pak systémové DNS</string>
+    <string name="doh_mode_system_first">Nejprve systémové DNS, pak DoH</string>
+    <string name="doh_mode_doh_only">Pouze DoH (bez zálohy)</string>
+    <string name="doh_mode_system_only">Pouze systémové DNS (DoH zakázáno)</string>
 </resources>

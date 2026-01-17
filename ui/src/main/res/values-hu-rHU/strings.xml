@@ -103,4 +103,18 @@
     <string name="type_name_kernel_module">Kernel modul</string>
     <string name="unknown_error">Ismeretlen hiba</string>
     <string name="updater_corrupt_navigate">Weboldal megnyitása</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Titkosított DNS feloldás beállítása</string>
+    <string name="doh_settings_summary_disabled">Letiltva</string>
+    <string name="doh_enabled">Engedélyezve</string>
+    <string name="doh_provider">DoH szolgáltató</string>
+    <string name="doh_custom_url">Egyéni DoH URL</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Kérjük, adjon meg egy egyéni DoH URL-t</string>
+    <string name="doh_custom_provider">Egyéni</string>
+    <string name="doh_priority_mode">Feloldási prioritás</string>
+    <string name="doh_mode_doh_first">DoH először, rendszer DNS tartalékként</string>
+    <string name="doh_mode_system_first">Rendszer DNS először, DoH tartalékként</string>
+    <string name="doh_mode_doh_only">Csak DoH (nincs tartalék)</string>
+    <string name="doh_mode_system_only">Csak rendszer DNS (DoH letiltva)</string>
 </resources>

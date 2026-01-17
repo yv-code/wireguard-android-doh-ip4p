@@ -256,4 +256,18 @@
     <string name="biometric_prompt_private_key_title">Özel anahtarı görmek için kimliğinizi doğrulayın</string>
     <string name="biometric_auth_error">Kimlik doğrulama hatası</string>
     <string name="biometric_auth_error_reason">Kimlik doğrulama hatası: %s</string>
+    <string name="doh_settings_title">DNS over HTTPS (DoH)</string>
+    <string name="doh_settings_summary">Şifreli DNS çözümlemesini yapılandır</string>
+    <string name="doh_settings_summary_disabled">Devre dışı</string>
+    <string name="doh_enabled">Etkin</string>
+    <string name="doh_provider">DoH sağlayıcısı</string>
+    <string name="doh_custom_url">Özel DoH URL\'si</string>
+    <string name="doh_custom_url_hint">https://doh.dns/dns-query</string>
+    <string name="doh_custom_url_required">Lütfen özel bir DoH URL\'si girin</string>
+    <string name="doh_custom_provider">Özel</string>
+    <string name="doh_priority_mode">Çözümleme önceliği</string>
+    <string name="doh_mode_doh_first">Önce DoH, başarısız olursa sistem DNS\'i</string>
+    <string name="doh_mode_system_first">Önce sistem DNS\'i, başarısız olursa DoH</string>
+    <string name="doh_mode_doh_only">Sadece DoH (yedek yok)</string>
+    <string name="doh_mode_system_only">Sadece sistem DNS\'i (DoH devre dışı)</string>
 </resources>
