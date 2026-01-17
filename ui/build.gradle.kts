@@ -20,12 +20,14 @@ android {
     }
     namespace = pkg
     defaultConfig {
-        applicationId = pkg
+        applicationId = "$pkg.doh_ip4p"
         minSdk = 24
         targetSdk = 36
         versionCode = providers.gradleProperty("wireguardVersionCode").get().toInt()
-        versionName = providers.gradleProperty("wireguardVersionName").get()
+        versionName = providers.gradleProperty("wireguardVersionName").get() + "-doh_ip4p"
         buildConfigField("int", "MIN_SDK_VERSION", minSdk.toString())
+        buildConfigField("String", "UPDATER_GITHUB_OWNER", "\"${providers.gradleProperty("updaterGithubOwner").get()}\"")
+        buildConfigField("String", "UPDATER_GITHUB_REPO", "\"${providers.gradleProperty("updaterGithubRepo").get()}\"")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

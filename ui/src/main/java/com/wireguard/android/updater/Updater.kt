@@ -13,7 +13,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Base64
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
@@ -33,13 +32,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-import java.nio.charset.StandardCharsets
-import java.security.InvalidKeyException
 import java.security.InvalidParameterException
-import java.security.MessageDigest
 import java.util.UUID
 import kotlin.math.max
 import kotlin.time.Duration.Companion.minutes
@@ -47,11 +44,9 @@ import kotlin.time.Duration.Companion.seconds
 
 object Updater {
     private const val TAG = "WireGuard/Updater"
-    private const val UPDATE_URL_FMT = "https://download.wireguard.com/android-client/%s"
+    private const val GITHUB_API_URL = "https://api.github.com/repos/%s/%s/releases/latest"
     private const val APK_NAME_PREFIX = BuildConfig.APPLICATION_ID + "-"
     private const val APK_NAME_SUFFIX = ".apk"
-    private const val LATEST_FILE = "latest.sig"
-    private const val RELEASE_PUBLIC_KEY_BASE64 = "RWTAzwGRYr3EC9px0Ia3fbttz8WcVN6wrOwWp2delz4el6SI8XmkKSMp"
     private val CURRENT_VERSION by lazy { Version(BuildConfig.VERSION_NAME) }
 
     private val updaterScope = CoroutineScope(Job() + Dispatchers.IO)
@@ -118,9 +113,9 @@ object Updater {
             }
         }
 
-        class Corrupt(private val betterFile: String?) : Progress() {
-            val downloadUrl: String
-                get() = UPDATE_URL_FMT.format(betterFile ?: "")
+        class Corrupt(private val downloadUrl: String?) : Progress() {
+            fun getDownloadUrl(): String =
+                downloadUrl ?: "https://github.com/${BuildConfig.UPDATER_GITHUB_OWNER}/${BuildConfig.UPDATER_GITHUB_REPO}/releases"
         }
     }
 
@@ -130,16 +125,6 @@ object Updater {
     private suspend fun emitProgress(progress: Progress, force: Boolean = false) {
         if (force || mutableState.firstOrNull()?.javaClass != progress.javaClass)
             mutableState.emit(progress)
-    }
-
-    private class Sha256Digest(hex: String) {
-        val bytes: ByteArray
-
-        init {
-            if (hex.length != 64)
-                throw InvalidParameterException("SHA256 hashes must be 32 bytes long")
-            bytes = hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-        }
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
@@ -173,67 +158,43 @@ object Updater {
         }
     }
 
-    private class Update(val fileName: String, val version: Version, val hash: Sha256Digest)
+    private class Update(val fileName: String, val version: Version, val downloadUrl: String)
 
-    private fun versionOfFile(name: String): Version? {
-        if (!name.startsWith(APK_NAME_PREFIX) || !name.endsWith(APK_NAME_SUFFIX))
-            return null
+    private fun versionFromTag(tag: String): Version? {
+        // Extract version from tag like "v1.0.20260102" or "1.0.20260102"
+        val versionStr = tag.removePrefix("v").removeSuffix("-doh_ip4p")
         return try {
-            Version(name.substring(APK_NAME_PREFIX.length, name.length - APK_NAME_SUFFIX.length))
+            Version(versionStr)
         } catch (_: Throwable) {
             null
         }
     }
 
-    private fun verifySignedFileList(signifyDigest: String): List<Update> {
-        val updates = ArrayList<Update>(1)
-        val publicKeyBytes = Base64.decode(RELEASE_PUBLIC_KEY_BASE64, Base64.DEFAULT)
-        if (publicKeyBytes == null || publicKeyBytes.size != 32 + 10 || publicKeyBytes[0] != 'E'.code.toByte() || publicKeyBytes[1] != 'd'.code.toByte())
-            throw InvalidKeyException("Invalid public key")
-        val lines = signifyDigest.split("\n", limit = 3)
-        if (lines.size != 3)
-            throw InvalidParameterException("Invalid signature format: too few lines")
-        if (!lines[0].startsWith("untrusted comment: "))
-            throw InvalidParameterException("Invalid signature format: missing comment")
-        val signatureBytes = Base64.decode(lines[1], Base64.DEFAULT)
-        if (signatureBytes == null || signatureBytes.size != 64 + 10)
-            throw InvalidParameterException("Invalid signature format: wrong sized or missing signature")
-        for (i in 0..9) {
-            if (signatureBytes[i] != publicKeyBytes[i])
-                throw InvalidParameterException("Invalid signature format: wrong signer")
-        }
-        if (!Ed25519.verify(
-                lines[2].toByteArray(StandardCharsets.UTF_8),
-                signatureBytes.sliceArray(10 until 10 + 64),
-                publicKeyBytes.sliceArray(10 until 10 + 32)
-            )
-        )
-            throw SecurityException("Invalid signature")
-        for (line in lines[2].split("\n").dropLastWhile { it.isEmpty() }) {
-            val components = line.split("  ", limit = 2)
-            if (components.size != 2)
-                throw InvalidParameterException("Invalid file list format: too few components")
-            /* If version is null, it's not a file we understand, but still a legitimate entry, so don't throw. */
-            val version = versionOfFile(components[1]) ?: continue
-            updates.add(Update(components[1], version, Sha256Digest(components[0])))
-        }
-        return updates
-    }
-
     private fun checkForUpdates(): Update? {
-        val connection = URL(UPDATE_URL_FMT.format(LATEST_FILE)).openConnection() as HttpURLConnection
+        val url = GITHUB_API_URL.format(BuildConfig.UPDATER_GITHUB_OWNER, BuildConfig.UPDATER_GITHUB_REPO)
+        val connection = URL(url).openConnection() as HttpURLConnection
         connection.setRequestProperty("User-Agent", Application.USER_AGENT)
+        connection.setRequestProperty("Accept", "application/vnd.github+json")
         connection.connect()
+
         if (connection.responseCode != HttpURLConnection.HTTP_OK)
             throw IOException(connection.responseMessage)
-        var fileListBytes = ByteArray(1024 * 512 /* 512 KiB */)
-        connection.inputStream.use {
-            val len = it.read(fileListBytes)
-            if (len <= 0)
-                throw IOException("File list is empty")
-            fileListBytes = fileListBytes.sliceArray(0 until len)
+
+        val response = connection.inputStream.bufferedReader().readText()
+        val json = JSONObject(response)
+        val tagName = json.getString("tag_name")
+        val version = versionFromTag(tagName) ?: return null
+
+        val assets = json.getJSONArray("assets")
+        for (i in 0 until assets.length()) {
+            val asset = assets.getJSONObject(i)
+            val name = asset.getString("name")
+            if (name.startsWith(APK_NAME_PREFIX) && name.endsWith(APK_NAME_SUFFIX)) {
+                val downloadUrl = asset.getString("browser_download_url")
+                return Update(name, version, downloadUrl)
+            }
         }
-        return verifySignedFileList(fileListBytes.decodeToString()).maxByOrNull { it.version }
+        return null
     }
 
     private suspend fun downloadAndUpdate() = withContext(Dispatchers.IO) {
@@ -257,7 +218,7 @@ object Updater {
         }
 
         emitProgress(Progress.Downloading(0UL, 0UL), true)
-        val connection = URL(UPDATE_URL_FMT.format(update.fileName)).openConnection() as HttpURLConnection
+        val connection = URL(update.downloadUrl).openConnection() as HttpURLConnection
         connection.setRequestProperty("User-Agent", Application.USER_AGENT)
         connection.connect()
         if (connection.responseCode != HttpURLConnection.HTTP_OK)
@@ -266,7 +227,6 @@ object Updater {
         var downloadedByteLen: ULong = 0UL
         val totalByteLen = connection.contentLengthLong.toULong()
         val fileBytes = ByteArray(1024 * 32 /* 32 KiB */)
-        val digest = MessageDigest.getInstance("SHA-256")
         emitProgress(Progress.Downloading(downloadedByteLen, totalByteLen), true)
 
         val installer = context.packageManager.packageInstaller
@@ -286,7 +246,6 @@ object Updater {
                         if (readLen <= 0)
                             break
 
-                        digest.update(fileBytes, 0, readLen)
                         dest.write(fileBytes, 0, readLen)
 
                         downloadedByteLen += readLen.toUInt()
@@ -299,8 +258,6 @@ object Updater {
             }
 
             emitProgress(Progress.Installing)
-            if (!digest.digest().contentEquals(update.hash.bytes))
-                throw SecurityException("Update has invalid hash")
             sessionFailure = false
         } finally {
             if (sessionFailure) {
@@ -399,7 +356,7 @@ object Updater {
                     } catch (_: Throwable) {
                         null
                     }
-                    emitProgress(Progress.Corrupt(update?.fileName))
+                    emitProgress(Progress.Corrupt(update?.downloadUrl))
                 }
             }
             return

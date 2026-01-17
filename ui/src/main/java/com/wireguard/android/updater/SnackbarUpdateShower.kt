@@ -152,7 +152,7 @@ class SnackbarUpdateShower(private val fragment: Fragment) {
                         .setMessage(R.string.updater_corrupt_message)
                         .setPositiveButton(R.string.updater_corrupt_navigate) { _, _ ->
                             val intent = Intent(Intent.ACTION_VIEW)
-                            intent.data = Uri.parse(progress.downloadUrl)
+                            intent.data = Uri.parse(progress.getDownloadUrl())
                             try {
                                 context.startActivity(intent)
                             } catch (e: Throwable) {

@@ -1,0 +1,54 @@
+name: Build and Release APK
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          submodules: recursive
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: jetbrains
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
+
+      - name: Build APK
+        run: ./gradlew assembleRelease
+
+      - name: Sign APK
+        uses: ilharp/sign-android-release@v2
+        id: sign_app
+        with:
+          releaseDir: ui/build/outputs/apk/release
+          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          buildToolsVersion: 36.0.0
+
+      - name: Rename APK
+        run: |
+          # Extract version from tag (remove 'v' prefix)
+          VERSION=${GITHUB_REF_NAME#v}
+          # Rename to format expected by updater: {APPLICATION_ID}-{version}.apk
+          mv "${{ steps.sign_app.outputs.signedFile }}" "com.wireguard.android.doh_ip4p-${VERSION}.apk"
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "com.wireguard.android.doh_ip4p-*.apk"
+          token: ${{ github.token }}
+          generateReleaseNotes: true
