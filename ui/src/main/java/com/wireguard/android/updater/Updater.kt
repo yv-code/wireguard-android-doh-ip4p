@@ -330,6 +330,12 @@ object Updater {
 
         val context = Application.get()
 
+        /* Hello copy and paste artist! Before you go remove these next two lines,
+         * I kindly ask that you actually think about what you're doing more globally,
+         * and instead remove this entire file from your project. Thank you very much! */
+        if (!context.packageName.startsWith("com.wireguard."))
+            throw RuntimeException("Too much code got copy and pasted")
+
         if (installerIsGooglePlay(context))
             return
 
@@ -367,18 +373,24 @@ object Updater {
                 return@launch
 
             var waitTime = 15
+            var exceptionCount = 0
             while (true) {
                 try {
-                    val update = checkForUpdates() ?: continue
+                    val update = checkForUpdates() ?: throw Exception("No updates found")
                     if (update.version > CURRENT_VERSION) {
                         Log.i(TAG, "Update available: ${update.version}")
                         UserKnobs.setUpdaterNewerVersionSeen(update.version.toString())
                         return@launch
                     }
                 } catch (_: Throwable) {
+                    if (++exceptionCount <= 6) {
+                        delay((exceptionCount * 8).seconds)
+                        continue
+                    }
                 }
                 delay(waitTime.minutes)
                 waitTime = 45
+                exceptionCount = 0
             }
         }
 

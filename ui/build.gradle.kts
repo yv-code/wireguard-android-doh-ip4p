@@ -1,14 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 val pkg: String = providers.gradleProperty("wireguardPackageName").get()
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.legacy.kapt)
 }
 
 android {
@@ -22,7 +18,6 @@ android {
     defaultConfig {
         applicationId = "$pkg.doh_ip4p"
         minSdk = 24
-        targetSdk = 36
         versionCode = providers.gradleProperty("wireguardVersionCode").get().toInt()
         versionName = providers.gradleProperty("wireguardVersionName").get() + "-doh_ip4p"
         buildConfigField("int", "MIN_SDK_VERSION", minSdk.toString())
@@ -88,8 +83,4 @@ dependencies {
 tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.add("-Xlint:unchecked")
     options.isDeprecation = true
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions.jvmTarget = JvmTarget.JVM_17
 }
